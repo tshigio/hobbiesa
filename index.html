@@ -1,0 +1,276 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Gira Hobbies</title>
+<meta name="theme-color" content="#F1F4FA">
+<meta name="description" content="Sorteie uma ideia de hobby, pratique 10 minutos e conte em 1.">
+<link rel="manifest" href="manifest.json">
+<link rel="icon" href="icon-192.png">
+<link rel="apple-touch-icon" href="icon-192.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500&family=Newsreader:opsz,wght@6..72,300;400&family=Fraunces:opsz,wght@9..144,400&display=swap" rel="stylesheet">
+<style>
+:root{--fonte-assunto:Fraunces,Georgia,serif;--bg:#F1F4FA;--ink:#0E1E3F;--soft:#6A7791;--line:#D8DFEC;--acc:#2D4F94;--card:#FAFBFE;
+box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#0A1328;--ink:#E4EAF7;--soft:#8D99B5;--line:#24304F;--acc:#7C9FE3;--card:#101C38}}
+:root[data-theme="dark"]{--bg:#0A1328;--ink:#E4EAF7;--soft:#8D99B5;--line:#24304F;--acc:#7C9FE3;--card:#101C38}
+html{scroll-padding-top:env(safe-area-inset-top,0px)}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--ink);font:400 16px/1.55 Inter,sans-serif;min-height:100vh;text-align:center;letter-spacing:-.06em;word-spacing:-.04em}
+button,input,select{letter-spacing:inherit;word-spacing:inherit}
+main{max-width:600px;margin:0 auto;padding:24px 20px 56px}
+h1{font:400 28px/1.1 var(--fonte-assunto);letter-spacing:-.095em;word-spacing:-.06em;margin:8px 0 6px}
+.sub{color:var(--soft);margin:0 auto 14px;font-size:15px;max-width:38ch}
+.rm{flex:none;background:none;border:0;color:var(--soft);font:400 14px Inter,sans-serif;cursor:pointer;padding:4px 0 4px 8px;text-decoration:underline}
+#snd{display:block;margin:0 auto 14px;padding:4px 0}
+.chips{display:flex;flex-wrap:wrap;justify-content:center;gap:8px;margin:0;padding:2px 0 12px}
+.chips::-webkit-scrollbar{display:none}
+.chip{flex:none;border:1.5px solid var(--ink);background:transparent;color:var(--ink);border-radius:99px;padding:7px 14px;font:500 14px Inter,sans-serif;cursor:pointer}
+.chip[aria-pressed="true"]{background:var(--ink);color:var(--bg)}
+.stage{padding:18px 0 0;margin-top:6px;height:210px;overflow:hidden;display:flex;flex-direction:column;justify-content:flex-start;align-items:center;text-align:center}
+.cat{font:400 14px/24px Inter,sans-serif;color:var(--acc);margin:0 0 10px;height:24px;flex:none;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.topic{width:100%;text-align:center;font:400 clamp(24px,5.5vw,32px)/1.12 var(--fonte-assunto);letter-spacing:-.095em;word-spacing:-.06em;margin:0;flex:1;min-height:0;overflow:hidden;overflow-wrap:anywhere;transition:opacity .3s ease}
+.topic.spin{opacity:.3}
+.go{display:block;width:auto;margin:18px auto 16px;border:1.5px solid var(--ink);background:var(--ink);color:var(--bg);border-radius:99px;padding:10px 24px;font:500 16px Inter,sans-serif;cursor:pointer}
+.go:active{opacity:.8}
+.row{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.step{border:1.5px solid var(--line);background:var(--card);color:var(--ink);border-radius:14px;padding:12px 8px;font:500 15px Inter,sans-serif;cursor:pointer;text-align:center}
+.step:disabled{opacity:.4;cursor:default}
+.save{display:block;margin:14px auto 0;background:none;border:0;color:var(--ink);font:500 15px Inter,sans-serif;text-decoration:underline;cursor:pointer;padding:6px 0}
+h2{font:400 23px/1.2 var(--fonte-assunto);letter-spacing:-.095em;word-spacing:-.06em;margin:38px 0 8px}
+ul{list-style:none;margin:0;padding:0}
+li{display:flex;justify-content:center;flex-wrap:wrap;text-align:center;gap:12px;align-items:center;border-bottom:1px solid var(--line);padding:12px 0}
+li button{flex:none;background:none;border:0;color:var(--soft);font:400 14px Inter,sans-serif;cursor:pointer;padding:4px 0 4px 8px}
+.empty{color:var(--soft);font-size:15px}
+.lbl{font:500 15px Inter,sans-serif;color:var(--soft);margin:22px 0 0}
+select,input{width:100%;text-align:center;text-align-last:center;border:1.5px solid var(--line);border-radius:12px;background:var(--card);color:var(--ink);padding:12px;font:400 16px Inter,sans-serif;margin-top:6px}
+input:focus,select:focus{outline:0;border-color:var(--ink)}
+.addb{width:100%;margin-top:10px}
+.msg{min-height:22px;color:var(--acc);font-size:15px;margin:8px 0 0}
+details{border:1.5px solid var(--line);border-radius:14px;background:var(--card);margin-top:10px;padding:2px 14px}
+summary{display:flex;justify-content:center;text-align:center;align-items:center;gap:8px;padding:12px 0;font:400 20px var(--fonte-assunto);letter-spacing:-.095em;word-spacing:-.06em;cursor:pointer}
+summary small{letter-spacing:-.06em;word-spacing:-.04em;font:400 15px Inter,sans-serif;color:var(--soft)}
+details ul{margin-bottom:8px}
+details li:last-child{border-bottom:0}
+.timer{position:fixed;inset:0;background:var(--ink);color:var(--bg);display:none;flex-direction:column;align-items:center;justify-content:center;text-align:center;padding:24px;padding-top:calc(24px + env(safe-area-inset-top,0px));padding-bottom:calc(24px + env(safe-area-inset-bottom,0px));z-index:20}
+.timer.on{display:flex}
+.timer .what{font:400 18px Inter,sans-serif;opacity:.75;margin:0}
+.timer .t{letter-spacing:0;word-spacing:0;font:300 clamp(96px,26vw,150px)/1 Newsreader,Georgia,serif;margin:14px 0 18px;font-variant-numeric:tabular-nums}
+.bar{width:min(300px,70%);height:4px;border-radius:99px;background:rgba(128,128,128,.4);margin:0 0 26px}
+.bar i{display:block;height:100%;width:100%;border-radius:99px;background:var(--bg);transition:width 1s linear}
+.timer .tp{font:300 26px/1.15 Newsreader,Georgia,serif;max-width:420px;margin:0 0 30px}
+.timer button{border:1.5px solid var(--bg);background:var(--bg);color:var(--ink);border-radius:14px;padding:14px 24px;font:500 18px Inter,sans-serif;cursor:pointer;margin:5px}
+.timer button.ghost{background:transparent;color:var(--bg)}
+button:focus-visible{outline:3px solid var(--acc);outline-offset:2px}
+@media (prefers-reduced-motion:reduce){*{transition:none!important}}
+</style>
+</head>
+<body>
+<main>
+  <h1>Gira Hobbies</h1>
+  <p class="sub">Escolha os hobbies, gire para sortear uma ideia, pratique 10 min e conte em 1 min.</p>
+  <button class="rm" id="snd" aria-pressed="true">Som ligado</button>
+  <div class="chips" id="chips" role="group" aria-label="Hobbies"></div>
+  <section class="stage" aria-live="polite">
+    <p class="cat" id="cat">Escolha e gire</p>
+    <p class="topic" id="topic">Aperte em girar para sortear uma ideia.</p>
+  </section>
+  <button class="go" id="go">Girar</button>
+  <div class="row">
+    <button class="step" id="bR" disabled>Praticar 10 min</button>
+    <button class="step" id="bF" disabled>Contar 1 min</button>
+  </div>
+  <button class="save" id="save" disabled>Salvar ideia</button>
+  <h2>Salvos</h2>
+  <ul id="saved"></ul>
+  <p class="empty" id="none">Nenhuma ideia salva ainda.</p>
+
+  <h2>Meus hobbies</h2>
+  <p class="lbl">1. Novo hobby</p>
+  <input id="nM" placeholder="Nome do hobby" aria-label="Novo hobby" enterkeyhint="done">
+  <button class="step addb" id="bM">Adicionar hobby</button>
+
+  <p class="lbl">2. Nova ideia</p>
+  <select id="selA" aria-label="Hobby da nova ideia"></select>
+  <input id="nI" placeholder="Nome da ideia" aria-label="Nova ideia" enterkeyhint="done">
+  <button class="step addb" id="bI">Adicionar ideia</button>
+  <p class="msg" id="msg" role="status"></p>
+
+  <h2>Tudo o que você criou</h2>
+  <div id="tree"></div>
+  <h2>Backup</h2>
+  <p class="sub">Seus dados ficam salvos neste celular. Guarde uma cópia de segurança de vez em quando.</p>
+  <button class="step addb" id="bExp">Exportar backup</button>
+  <button class="step addb" id="bImp">Restaurar backup</button>
+  <input type="file" id="fImp" accept="application/json,.json" hidden>
+</main>
+<div class="timer" id="timer" role="dialog" aria-modal="true">
+  <p class="what" id="tw"></p>
+  <div class="t" id="tt">10:00</div>
+  <div class="bar"><i id="bar"></i></div>
+  <p class="tp" id="tp"></p>
+  <div>
+    <button id="tdone">Pronto</button>
+    <button class="ghost" id="tclose">Fechar</button>
+  </div>
+</div>
+<script>
+const $=id=>document.getElementById(id);
+function h(t,c,x){const e=document.createElement(t);if(c)e.className=c;if(x!==undefined)e.textContent=x;return e}
+function ld(k,f){try{const v=JSON.parse(localStorage.getItem(k));return v===null?f:v}catch(e){return f}}
+function sv(k,v){try{localStorage.setItem(k,JSON.stringify(v));return true}catch(e){try{msg("Não foi possível salvar. Faça um backup.")}catch(_){}return false}}
+function fit(){
+  const el=$("topic");el.style.fontSize="";
+  let fs=parseFloat(getComputedStyle(el).fontSize);
+  while(el.scrollHeight>el.clientHeight+1&&fs>14){fs-=2;el.style.fontSize=fs+"px"}
+}
+let data=ld("gh1",[]),saved=ld("salvosH",[]),cur=null,tm=null,left=0,phase="",busy=false;
+const selM=new Set();
+let ac=null,on=ld("som",true);
+function ctx(){try{ac=ac||new (window.AudioContext||window.webkitAudioContext)();if(ac.state==="suspended")ac.resume()}catch(e){}return ac}
+function beep(f,d,t0,type,vol){
+  const a=ctx();if(!a||!on)return;
+  const o=a.createOscillator(),g=a.createGain(),t=a.currentTime+(t0||0);
+  o.type=type||"sine";o.frequency.value=f;
+  g.gain.setValueAtTime(0.0001,t);g.gain.exponentialRampToValueAtTime(vol||0.15,t+0.01);g.gain.exponentialRampToValueAtTime(0.0001,t+d);
+  o.connect(g);g.connect(a.destination);o.start(t);o.stop(t+d+0.02);
+}
+function paintSnd(){$("snd").textContent=on?"Som ligado":"Som desligado";$("snd").setAttribute("aria-pressed",on)}
+$("snd").onclick=()=>{on=!on;sv("som",on);paintSnd();if(on)beep(660,.1,0,"sine",.15)};
+paintSnd();
+function chip(label,on,fn){const b=h("button","chip",label);b.setAttribute("aria-pressed",on);b.onclick=fn;return b}
+function renderChips(){
+  const c=$("chips");c.innerHTML="";
+  c.appendChild(chip("Tudo",selM.size===0,()=>{selM.clear();renderChips()}));
+  data.forEach(M=>c.appendChild(chip(M.n,selM.has(M.n),()=>{selM.has(M.n)?selM.delete(M.n):selM.add(M.n);renderChips()})));
+}
+function pool(){
+  const out=[];
+  (selM.size?data.filter(M=>selM.has(M.n)):data).forEach(M=>M.m.forEach(t=>out.push({k:M.n,t})));
+  return out;
+}
+$("go").onclick=()=>{
+  if(busy)return;
+  const p=pool(),el=$("topic");
+  if(!p.length){$("cat").textContent="Nada para sortear";el.textContent="Crie hobbies e ideias em “Meus hobbies”, mais abaixo.";fit();return}
+  busy=true;ctx();el.classList.add("spin");
+  let n=0;
+  const id=setInterval(()=>{
+    const x=p[Math.floor(Math.random()*p.length)];
+    el.textContent=x.t;$("cat").textContent=x.k;n++;fit();beep(380+n*40,.05,0,"triangle",.12);
+    if(n>=14){clearInterval(id);beep(660,.15,0,"sine",.2);beep(880,.35,.13,"sine",.2);cur=x;el.classList.remove("spin");busy=false;
+      ["bR","bF","save"].forEach(i=>$(i).disabled=false);syncSave()}
+  },70);
+};
+const sameS=(a,b)=>a.k===b.k&&a.t===b.t;
+function syncSave(){if(cur)$("save").textContent=saved.some(s=>sameS(s,cur))?"Ideia salva":"Salvar ideia"}
+$("save").onclick=()=>{if(!cur||saved.some(s=>sameS(s,cur)))return;saved.unshift(cur);sv("salvosH",saved);renderSaved();syncSave()};
+function renderSaved(){
+  const ul=$("saved");ul.innerHTML="";
+  $("none").style.display=saved.length?"none":"block";
+  saved.forEach((s,i)=>{
+    const li=h("li"),sp=h("span",0,s.k+": "+s.t),b=h("button",0,"Remover");
+    b.setAttribute("aria-label","Remover "+s.t);
+    b.onclick=()=>{saved.splice(i,1);sv("salvosH",saved);renderSaved();syncSave()};
+    li.append(sp,b);ul.appendChild(li);
+  });
+}
+function msg(t){$("msg").textContent=t;setTimeout(()=>{if($("msg").textContent===t)$("msg").textContent=""},2500)}
+function fillA(){
+  const sel=$("selA"),old=sel.value;sel.innerHTML="";
+  data.forEach(M=>{const o=h("option",0,M.n);o.value=M.n;sel.appendChild(o)});
+  if(data.some(M=>M.n===old))sel.value=old;
+}
+const same=(a,b)=>a.toLowerCase()===b.toLowerCase();
+function addM(){
+  const n=$("nM").value.trim();if(!n)return msg("Escreva o nome do hobby.");
+  if(data.some(M=>same(M.n,n)))return msg("Esse hobby já existe.");
+  data.push({n,m:[]});$("nM").value="";refresh();$("selA").value=n;msg("Hobby criado. Agora crie ideias nele.");
+}
+function addI(){
+  const M=data.find(x=>x.n===$("selA").value),n=$("nI").value.trim();
+  if(!M)return msg("Crie um hobby primeiro.");
+  if(!n)return msg("Escreva o nome da ideia.");
+  if(M.m.some(i=>same(i,n)))return msg("Essa ideia já existe nesse hobby.");
+  M.m.push(n);$("nI").value="";refresh();$("selA").value=M.n;msg("Ideia adicionada.");
+}
+$("bM").onclick=addM;$("bI").onclick=addI;
+$("nM").onkeydown=e=>{if(e.key==="Enter")addM()};
+$("nI").onkeydown=e=>{if(e.key==="Enter")addI()};
+function arm(b,fn){
+  const o=b.textContent;
+  b.onclick=e=>{e.preventDefault();e.stopPropagation();
+    if(b.dataset.a){fn();return}
+    b.dataset.a=1;b.textContent="Certeza?";
+    setTimeout(()=>{delete b.dataset.a;b.textContent=o},2500)};
+}
+function renderTree(){
+  const t=$("tree");t.innerHTML="";
+  if(!data.length){t.appendChild(h("p","empty","Nada por aqui ainda. Comece criando um hobby."));return}
+  data.forEach((M,mi)=>{
+    const d=h("details");d.open=true;
+    const sm=h("summary"),nm=h("span");
+    nm.append(M.n+" ",h("small",0,"("+M.m.length+" ideias)"));
+    const rb=h("button","rm","Remover");
+    arm(rb,()=>{selM.delete(M.n);data.splice(mi,1);refresh()});
+    sm.append(nm,rb);d.appendChild(sm);
+    if(!M.m.length)d.appendChild(h("p","empty","Sem ideias ainda."));
+    const ul=h("ul");
+    M.m.forEach((i,ii)=>{
+      const li=h("li"),b=h("button",0,"Remover");
+      b.setAttribute("aria-label","Remover "+i);
+      arm(b,()=>{M.m.splice(ii,1);refresh()});
+      li.append(h("span",0,i),b);ul.appendChild(li);
+    });
+    d.appendChild(ul);t.appendChild(d);
+  });
+}
+function refresh(){sv("gh1",data);renderChips();fillA();renderTree()}
+let tot=1;
+function fmt(s){return String(Math.floor(s/60)).padStart(2,"0")+":"+String(s%60).padStart(2,"0")}
+function start(ph,secs){
+  if(!cur)return;
+  clearInterval(tm);ctx();beep(520,.12,0,"sine",.15);phase=ph;left=secs;tot=secs;$("bar").style.transition="none";$("bar").style.width="100%";setTimeout(()=>{$("bar").style.transition=""},50);
+  $("tw").textContent=ph==="r"?"Praticando":"Contando";
+  $("tp").textContent=cur.k+": "+cur.t;$("tt").textContent=fmt(left);
+  $("tdone").textContent=ph==="r"?"Pronto, pratiquei":"Pronto";
+  $("timer").classList.add("on");
+  tm=setInterval(()=>{left--;$("tt").textContent=fmt(Math.max(left,0));$("bar").style.width=(Math.max(left,0)/tot*100)+"%";
+    if(left>0&&left<=5)beep(600,.06,0,"sine",.1);
+    if(left<=0){clearInterval(tm);[0,.25,.5].forEach(d=>beep(880,.18,d,"square",.1));try{navigator.vibrate&&navigator.vibrate([250,100,250])}catch(e){}$("tw").textContent="Tempo acabou"}},1000);
+}
+$("bR").onclick=()=>start("r",600);
+$("bF").onclick=()=>start("f",60);
+$("tdone").onclick=()=>{clearInterval(tm);if(phase==="r"){start("f",60)}else{$("timer").classList.remove("on")}};
+$("tclose").onclick=()=>{clearInterval(tm);$("timer").classList.remove("on")};
+const BK=["gh1", "salvosH", "som"],BKID="gira-hobbies";
+function exportBk(){
+  const o={app:BKID,v:1,date:new Date().toISOString(),data:{}};
+  BK.forEach(k=>{o.data[k]=ld(k,null)});
+  const b=new Blob([JSON.stringify(o)],{type:"application/json"}),l=document.createElement("a");
+  l.href=URL.createObjectURL(b);l.download="backup-"+BKID+"-"+new Date().toISOString().slice(0,10)+".json";
+  document.body.appendChild(l);l.click();l.remove();setTimeout(()=>URL.revokeObjectURL(l.href),4000);
+  msg("Backup gerado.");
+}
+function importBk(file){
+  const r=new FileReader();
+  r.onload=()=>{try{
+    const o=JSON.parse(r.result);if(o.app!==BKID||!o.data)throw 0;
+    if(!confirm("Isso vai substituir os dados atuais pelos do backup. Continuar?"))return;
+    BK.forEach(k=>{if(o.data[k]!==null&&o.data[k]!==undefined)sv(k,o.data[k])});
+    data=ld(BK[0],[]);saved=ld(BK[1],[]);on=ld("som",true);selM.clear();paintSnd();renderSaved();refresh();syncSave();msg("Backup restaurado.");
+  }catch(e){msg("Arquivo de backup inválido.")}};
+  r.readAsText(file);
+}
+$("bExp").onclick=exportBk;
+$("bImp").onclick=()=>$("fImp").click();
+$("fImp").onchange=e=>{const f=e.target.files[0];if(f)importBk(f);e.target.value=""};
+try{navigator.storage&&navigator.storage.persist&&navigator.storage.persist()}catch(e){}
+renderSaved();refresh();fit();addEventListener("resize",fit);try{document.fonts.ready.then(fit)}catch(e){}
+if("serviceWorker" in navigator){window.addEventListener("load",()=>{navigator.serviceWorker.register("sw.js").catch(()=>{})})}
+</script>
+</body>
+</html>
